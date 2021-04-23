@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from typing import Tuple
-from ml_project.enities import SplitParams
+from enities import SplitParams
 
 
 def read_csv(path: str, **kwargs) -> pd.DataFrame:

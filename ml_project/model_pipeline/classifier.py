@@ -1,5 +1,7 @@
-from sklearn.linear_model import LogisticRegression
 import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
+import joblib
 
 
 class Classifier:
@@ -13,3 +15,10 @@ class Classifier:
 
     def predict(self, X: np.array) -> np.array:
         return self.model.predict(X)
+
+    def dump_model(self, path: str):
+        joblib.dump(self.model, path)
+
+
+def get_classification_report(y_true: np.array, y_pred: np.array):
+    return classification_report(y_true, y_pred)

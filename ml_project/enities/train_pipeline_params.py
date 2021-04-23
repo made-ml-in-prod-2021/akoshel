@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from ml_project.enities import SplitParams, FeatureParams, ClassifierParams
+from enities import SplitParams, FeatureParams, ClassifierParams
 from marshmallow_dataclass import class_schema
 import yaml
 
@@ -7,6 +7,8 @@ import yaml
 @dataclass
 class TrainingPipelineParams:
     input_data_path: str
+    output_model_path: str
+    logger_config: str
     split_params: SplitParams
     feature_params: FeatureParams
     classifier_params: ClassifierParams

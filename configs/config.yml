@@ -1,4 +1,6 @@
-input_data_path: "data/train.csv"
+input_data_path: "data/heart.csv"
+output_model_path: "models/model.pkl"
+logger_config: "configs/logger_config.yml"
 split_params:
   validation_size: 0.25
   random_state: 23

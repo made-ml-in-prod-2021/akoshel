@@ -1,7 +1,7 @@
 import pytest
-from ml_project.data import get_train_test_data, read_csv
-from ml_project.enities import read_training_pipeline_params
-from ml_project.model_pipeline import DataProcessingPipeline, Classifier
+from data import get_train_test_data, read_csv
+from enities import read_training_pipeline_params
+from model_pipeline import DataProcessingPipeline, Classifier
 
 
 @pytest.fixture
