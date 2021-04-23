@@ -1,13 +1,15 @@
 from dataclasses import dataclass
-from ml_project.enities import SplitParams, FeatureParams
+from ml_project.enities import SplitParams, FeatureParams, ClassifierParams
 from marshmallow_dataclass import class_schema
 import yaml
+
 
 @dataclass
 class TrainingPipelineParams:
     input_data_path: str
     split_params: SplitParams
     feature_params: FeatureParams
+    classifier_params: ClassifierParams
 
 
 TrainingPipelineParamsSchema = class_schema(TrainingPipelineParams)

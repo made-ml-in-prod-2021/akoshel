@@ -16,7 +16,7 @@ class DataProcessingPipeline:
         categorical_pipeline = Pipeline(
             [
                 ('selection', FunctionTransformer(lambda x: x[categorical_features], validate=False)),
-                ("ohe", OneHotEncoder()),
+                ("ohe", OneHotEncoder(sparse=False)),
             ]
         )
         return categorical_pipeline

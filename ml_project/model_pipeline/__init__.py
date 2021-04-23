@@ -1,1 +1,2 @@
 from ml_project.model_pipeline.prepare_data import DataProcessingPipeline
+from ml_project.model_pipeline.classifier import Classifier
