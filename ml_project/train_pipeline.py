@@ -46,10 +46,17 @@ def train_pipeline(params):
 
 @click.command(name="train_pipeline")
 @click.argument("config_path")
-def train_pipeline_command(config_path: str):
+@click.argument("train_or_validate")
+def train_pipeline_command(config_path: str, train_or_validate: str):
     params = read_training_pipeline_params(config_path)
     setup_logging(params.logger_config)
-    train_pipeline(params)
+    if train_or_validate == "train":
+        logger.warning("App initiated in train mode")
+        train_pipeline(params)
+    elif train_or_validate == "validate":
+        logger.warning("App initiated in validation mode")
+    else:
+        logger.warning("Incorrect train or valiidation mode")
 
 
 if __name__ == "__main__":
