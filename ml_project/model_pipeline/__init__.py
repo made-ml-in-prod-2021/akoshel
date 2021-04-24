@@ -1,2 +1,2 @@
 from model_pipeline.prepare_data import DataProcessingPipeline
-from model_pipeline.classifier import Classifier
+from model_pipeline.classifier import Classifier, get_classification_report

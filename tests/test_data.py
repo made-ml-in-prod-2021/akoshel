@@ -12,7 +12,7 @@ def init_data():
 
 @pytest.fixture
 def train_params():
-    params = read_training_pipeline_params("configs/config.yml")
+    params = read_training_pipeline_params("configs/config_lr.yml")
     return params
 
 
@@ -32,7 +32,7 @@ def test_data_processing_pipeline(init_data, train_params):
 
 
 def test_classifier(init_data, train_params):
-    classifier = Classifier(train_params.classifier_params)
+    classifier = Classifier(train_params.classifier_params, train_params.model_type)
     pipeline = DataProcessingPipeline(train_params.feature_params.categorical_features,
                                       train_params.feature_params.numerical_features)
     pipeline.fit(init_data)

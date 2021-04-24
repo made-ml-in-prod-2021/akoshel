@@ -2,6 +2,8 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, FunctionTransformer
 from typing import List
 import pandas as pd
+import joblib
+from cloudpickle import dump
 
 
 class DataProcessingPipeline:
@@ -45,4 +47,7 @@ class DataProcessingPipeline:
     def transform(self, data: pd.DataFrame):
         return self.pipeline.transform(data)
 
+    def dump_preprocessor(self, path: str):
+        with open(path, 'wb') as f:
+            dump(self.pipeline, f)
 

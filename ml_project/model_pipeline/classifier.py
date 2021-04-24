@@ -1,14 +1,20 @@
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 import joblib
 
 
 class Classifier:
 
-    def __init__(self, params):
-        self.model = LogisticRegression(C=params.C, penalty=params.penalty, fit_intercept=params.fit_intercept,
-                                        random_state=params.random_state)
+    def __init__(self, params, model_type: str):
+        self.model_type = model_type
+        if model_type == "Logistic Regression":
+            self.model = LogisticRegression(C=params.C, penalty=params.penalty, fit_intercept=params.fit_intercept,
+                                            random_state=params.random_state)
+        if model_type == "Random Forest Classifier":
+            self.model = RandomForestClassifier(n_estimators=params.n_estimators, max_depth=params.max_depth,
+                                            random_state=params.random_state)
 
     def fit(self, X: np.array, y: np.array) -> None:
         self.model.fit(X, y)

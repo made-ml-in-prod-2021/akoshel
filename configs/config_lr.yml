@@ -1,6 +1,8 @@
 input_data_path: "data/heart.csv"
-output_model_path: "models/model.pkl"
+output_model_path: "models/logistic_regression.pkl"
+output_data_preprocessor_path: "models/data_preprocessor.pkl"
 logger_config: "configs/logger_config.yml"
+model_type: "Logistic Regression"
 split_params:
   validation_size: 0.25
   random_state: 23

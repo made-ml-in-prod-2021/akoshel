@@ -1,9 +1,10 @@
 import logging.config
-from model_pipeline import DataProcessingPipeline, Classifier
+from model_pipeline import DataProcessingPipeline, Classifier, get_classification_report
 from data import read_csv, get_train_test_data
 from enities import read_training_pipeline_params
 import yaml
 import click
+
 
 
 APPLICATION_NAME = 'homework01'
@@ -17,9 +18,30 @@ def setup_logging(path):
 
 def train_pipeline(params):
     data = read_csv(params.input_data_path)
-    logger.info(f"data loaded, DF shape{data.shape[0]}, {data.shape[1]}")
+    logger.info(f"data loaded, DF shape{data.shape}")
     train_df, test_df = get_train_test_data(data, params.split_params)
-    logger.info("train_df and test_df prepared")
+    logger.info(f"train_df shape is {train_df.shape}")
+    logger.info(f"test_df shape is {test_df.shape}")
+    data_preprocessing_pipeline = DataProcessingPipeline(params.feature_params.categorical_features,
+                                                         params.feature_params.numerical_features)
+    logger.info("Data preprocessing pipeline initiated")
+    classifier = Classifier(params.classifier_params, params.model_type)
+    logger.info("Classifier initiated")
+    data_preprocessing_pipeline.fit(train_df)
+    logger.info("Data preprocessing pipeline fitted")
+    transformed_train = data_preprocessing_pipeline.transform(train_df)
+    logger.info(f"transfromed train data shape {transformed_train.shape}")
+    classifier.fit(transformed_train, train_df[params.feature_params.target].values)
+    logger.info("classifier fitted")
+    transformed_test = data_preprocessing_pipeline.transform(test_df)
+    logger.info(f"tranfromed test data shape {transformed_test.shape}")
+    y_pred = classifier.predict(transformed_test)
+    report_dict = get_classification_report(test_df[params.feature_params.target].values, y_pred)
+    logger.info(f"Classification report {report_dict}")
+    classifier.dump_model(params.output_model_path)
+    logger.info(f"Classifier dumped {params.output_model_path}")
+    data_preprocessing_pipeline.dump_preprocessor(params.output_data_preprocessor_path)
+    logger.info(f"Data preprocessor dumped {params.output_data_preprocessor_path}")
 
 
 @click.command(name="train_pipeline")
