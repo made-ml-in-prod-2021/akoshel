@@ -44,3 +44,21 @@ python ml_project/train_pipeline.py configs/config_rf.yml validate
 cd ml_project
 pytest ../tests --cov
 ```
+
+Самоанализ<br>
+-2) done<br>
+-1) done<br>
+0) done
+1) Датасет простой, в целом для его изучения было достаточно отчета из pandas_profiling
+2) done
+3) done
+4) done
+5) done. Использовано hypothesis
+6) done. 2 конфига для лр и рф
+7) done
+8) не сделано, тк. не знаю как сдампить кастомый трансформер для последующей валидации
+9) done
+10) done 
+11) пока что -
+12) пока что - 
+13) done
