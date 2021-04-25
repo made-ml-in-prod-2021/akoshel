@@ -6,6 +6,11 @@ https://data.mail.ru/profile/ale.koshelev/
 
 ## ДЗ № 1
 
+Сначала установите необходимые пакеты
+```
+pip install -r requirements.txt
+```
+
 Данные для модели были взяты отсюда https://www.kaggle.com/ronitf/heart-disease-uci <br>
 Для обработки данных построен пайплайн:<br>
 1. Для числовых признаков применена нормализация<br>
@@ -31,4 +36,11 @@ python ml_project/train_pipeline.py configs/config_lr.yml validate
 ```
 ```
 python ml_project/train_pipeline.py configs/config_rf.yml validate
+```
+После этого предикты запишутся в model/predicts.csv
+
+Для тестирования модели со статистикой покрытия тестами
+```
+cd ml_project
+pytest ../tests --cov
 ```
