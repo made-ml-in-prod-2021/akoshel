@@ -1,10 +1,12 @@
 import logging.config
+import pandas as pd
+import yaml
+import click
+import joblib
+from cloudpickle import load
 from model_pipeline import DataProcessingPipeline, Classifier, get_classification_report
 from data import read_csv, get_train_test_data
 from enities import read_training_pipeline_params
-import yaml
-import click
-
 
 
 APPLICATION_NAME = 'homework01'
@@ -43,6 +45,25 @@ def train_pipeline(params):
     data_preprocessing_pipeline.dump_preprocessor(params.output_data_preprocessor_path)
     logger.info(f"Data preprocessor dumped {params.output_data_preprocessor_path}")
 
+def validate_pipeline(params):
+    data = read_csv(params.input_data_for_validation)
+    logger.info(f"Validation df loaded, shape:{data.shape}")
+    classifier = Classifier(params.classifier_params, params.model_type)
+    classifier.model = joblib.load(params.output_model_path)
+    logger.info(f"Model type {params.model_type} loaded from {params.output_model_path}")
+    data_preprocessing_pipeline = DataProcessingPipeline(params.feature_params.categorical_features,
+                                                         params.feature_params.numerical_features)
+    with open(params.output_data_preprocessor_path, 'rb') as f:
+        data_preprocessing_pipeline.pipeline = load(f)
+        logger.info(f"Data preprocessor loaded from {params.output_data_preprocessor_path}")
+    transformed_data = data_preprocessing_pipeline.transform(data)
+    logger.info(f"data for validation preprocessed, shape: {transformed_data.shape}")
+    y_pred = classifier.predict(transformed_data)
+    logger.info(f"Predicts prepared")
+    pd.DataFrame(y_pred, columns=["target"]).to_csv(params.predicts_path)
+    logger.info(f"Predicts dumped to {params.predicts_path}")
+
+
 
 @click.command(name="train_pipeline")
 @click.argument("config_path")
@@ -55,6 +76,7 @@ def train_pipeline_command(config_path: str, train_or_validate: str):
         train_pipeline(params)
     elif train_or_validate == "validate":
         logger.warning("App initiated in validation mode")
+        validate_pipeline(params)
     else:
         logger.warning("Incorrect train or valiidation mode")
 

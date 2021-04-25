@@ -6,6 +6,9 @@ import joblib
 
 
 class Classifier:
+    """
+    Assign classifier, Logistic Regression or Random Forest Classifier
+    """
 
     def __init__(self, params, model_type: str):
         self.model_type = model_type
@@ -20,7 +23,9 @@ class Classifier:
         self.model.fit(X, y)
 
     def predict(self, X: np.array) -> np.array:
-        return self.model.predict(X)
+        if X.shape[0] > 0:
+            return self.model.predict(X)
+        return np.array([])
 
     def dump_model(self, path: str):
         joblib.dump(self.model, path)

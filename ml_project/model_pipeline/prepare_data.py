@@ -2,11 +2,14 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, FunctionTransformer
 from typing import List
 import pandas as pd
-import joblib
+import numpy as np
 from cloudpickle import dump
 
 
 class DataProcessingPipeline:
+    """
+    Data processing pipeline to separately process categorical and numerical feature and concatenate it in the end
+    """
 
     def __init__(self, categorical_features: List[str], numerical_features: List[str]):
         self.categorical_features = categorical_features
@@ -33,7 +36,7 @@ class DataProcessingPipeline:
         )
         return numerical_pipeline
 
-    def fit(self, data: pd.DataFrame):
+    def fit(self, data: pd.DataFrame) -> None:
         self.pipeline = Pipeline(steps=[
             ('feature_processing', FeatureUnion(
                 transformer_list=[
@@ -44,10 +47,12 @@ class DataProcessingPipeline:
         ])
         self.pipeline.fit(data)
 
-    def transform(self, data: pd.DataFrame):
-        return self.pipeline.transform(data)
+    def transform(self, data: pd.DataFrame) -> np.array:
+        if not data.empty:
+            return self.pipeline.transform(data)
+        return np.array([])
 
-    def dump_preprocessor(self, path: str):
+    def dump_preprocessor(self, path: str) -> None:
         with open(path, 'wb') as f:
             dump(self.pipeline, f)
 

@@ -6,8 +6,10 @@ import yaml
 @dataclass
 class TrainingPipelineParams:
     input_data_path: str
+    input_data_for_validation: str
     output_model_path: str
     output_data_preprocessor_path: str
+    predicts_path: str
     logger_config: str
     model_type: str
     split_params: SplitParams
