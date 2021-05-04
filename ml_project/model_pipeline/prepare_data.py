@@ -1,9 +1,38 @@
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, FunctionTransformer
+from sklearn.base import BaseEstimator, TransformerMixin
 from typing import List
 import pandas as pd
 import numpy as np
 from cloudpickle import dump
+
+
+class CustomMinMaxScaler(BaseEstimator, TransformerMixin):
+    """
+    Custom Min Max Scaler
+    """
+
+    def __init__(self, feature_range=(0, 1), copy=True):
+        self.feature_range = feature_range
+        self.copy = copy
+
+    def fit(self, X, y=None):
+        """
+        Fit transformer
+        y = None - for sklearn consistency
+        """
+        feature_range = self.feature_range
+        data_min = np.min(X, axis=0)
+        data_range = np.max(X, axis=0) - data_min
+        self.scale_ = (feature_range[1] - feature_range[0]) / data_range
+        self.min_ = feature_range[0] - data_min * self.scale_
+        return self
+
+    def transform(self, X):
+        """Tranform data from fitted scale and min"""
+        X *= self.scale_
+        X += self.min_
+        return X
 
 
 class DataProcessingPipeline:
@@ -31,7 +60,7 @@ class DataProcessingPipeline:
         numerical_pipeline = Pipeline(
             [
                 ('selection', FunctionTransformer(lambda x: x[numerical_features], validate=False)),
-                ("scaler", StandardScaler()),
+                ("scaler", CustomMinMaxScaler()),
             ]
         )
         return numerical_pipeline

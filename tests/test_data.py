@@ -3,9 +3,9 @@ sys.path.insert(0, "../ml_project")
 import pytest
 from data import get_train_test_data, read_csv
 from enities import read_training_pipeline_params
-from model_pipeline import DataProcessingPipeline, Classifier
+from model_pipeline import DataProcessingPipeline, Classifier, CustomMinMaxScaler
 from hypothesis import given, strategies
-from hypothesis.extra.pandas import columns, data_frames, column
+from hypothesis.extra.pandas import data_frames, column
 
 
 
@@ -19,6 +19,7 @@ def init_data():
 def train_params():
     params = read_training_pipeline_params("../configs/config_lr.yml")
     return params
+
 
 @pytest.fixture(scope="session")
 def data_processing_model():
@@ -79,3 +80,13 @@ def test_whole_pipeline(data_processing_model, data):
     transformed_data = data_processor.transform(data)
     classifier.predict(transformed_data)
     assert True
+
+
+
+def test_custom_min_max_scaler(init_data, train_params):
+    scaler = CustomMinMaxScaler()
+    fit_data = init_data.iloc[: init_data.shape[0] // 2]
+    transform_data = init_data.iloc[init_data.shape[0] // 2 :]
+    scaler.fit(fit_data[train_params.feature_params.numerical_features])
+    transformed_data = scaler.transform(transform_data[train_params.feature_params.numerical_features])
+    assert all(val < 1 for val in transformed_data.mean(axis=0).values)
