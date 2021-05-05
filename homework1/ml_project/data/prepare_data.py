@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from typing import Tuple
-from enities import SplitParams
+from ml_project.enities import SplitParams
 import logging
 
 

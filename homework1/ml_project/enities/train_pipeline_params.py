@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enities import SplitParams, FeatureParams, ClassifierParams
+from . import SplitParams, FeatureParams, ClassifierParams
 from marshmallow_dataclass import class_schema
 import yaml
 
