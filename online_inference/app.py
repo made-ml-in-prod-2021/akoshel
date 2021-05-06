@@ -1,3 +1,4 @@
+import pandas as pd
 import logging
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -19,6 +20,7 @@ class ModelResponse(BaseModel):
     target: float
 
 class InputData(BaseModel):
+    id: int
     chol: float
     thalach: int
     oldpeak: float
@@ -55,8 +57,26 @@ def health() -> bool:
     return not (classifier is None and data_processor is None)
 
 @app.get("/predict/", response_model=List[ModelResponse])
-def predict(request: InputData):
-    return [ModelResponse(id="1", target=1)]
+def predict(request: List[InputData]):
+    predict_df = prepare_predict_df(request)
+    return  make_predict(predict_df)
+
+
+def prepare_predict_df(input_data: List[InputData]) -> pd.DataFrame:
+    df = pd.DataFrame(columns=InputData.__fields__.keys())
+    for row in input_data:
+        df = df.append(row.__dict__, ignore_index=True)
+    return df
+
+def make_predict(df: pd.DataFrame) -> List[ModelResponse]:
+    transformed_data = data_processor.transform(df)
+    df['target'] = classifier.predict(transformed_data)
+    model_response_list = []
+    for row in df.loc[:, ['id', 'target']].itertuples():
+        model_response_list.append(ModelResponse(
+            id=row.id,
+            target=row.target,
+        ))
 
 
 if __name__ == "__main__":
