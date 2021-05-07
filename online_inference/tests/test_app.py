@@ -29,7 +29,7 @@ def client():
 
 
 
-def test_health(client) -> None:
+def test_app(client) -> None:
     response = client.get("/")
     assert response.status_code == 200
     response = client.get("/unknown")
