@@ -16,7 +16,7 @@ DEFAULT_PATH_HW1 = '../homework1'
 
 
 class ModelResponse(BaseModel):
-    id: str
+    id: int
     target: float
 
 class InputData(BaseModel):
@@ -59,7 +59,7 @@ def health() -> bool:
 @app.get("/predict/", response_model=List[ModelResponse])
 def predict(request: List[InputData]):
     predict_df = prepare_predict_df(request)
-    return  make_predict(predict_df)
+    return make_predict(predict_df)
 
 
 def prepare_predict_df(input_data: List[InputData]) -> pd.DataFrame:
@@ -77,6 +77,7 @@ def make_predict(df: pd.DataFrame) -> List[ModelResponse]:
             id=row.id,
             target=row.target,
         ))
+    return model_response_list
 
 
 if __name__ == "__main__":

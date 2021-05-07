@@ -1,0 +1,4 @@
+/.empty
+/.hypothesis
+/.idea
+*.pytest_cache
