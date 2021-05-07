@@ -1,0 +1,6 @@
+/data/predicts.csv
+/.idea
+/notebooks/.ipynb_checkpoints
+*.hypothesis
+*.pkl
+*.coverage
