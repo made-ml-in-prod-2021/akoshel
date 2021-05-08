@@ -1,15 +1,20 @@
 FROM python:3.7
 
-COPY requirements.txt /requirements.txt
+COPY ../requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
-COPY configs/ /configs
-COPY data /data
-RUN mkdir /models
-
-COPY dist/ml_project-0.1.0.tar.gz /ml_project-0.1.0.tar.gz
+COPY /homework1/dist/ml_project-0.1.0.tar.gz /ml_project-0.1.0.tar.gz
 RUN pip install /ml_project-0.1.0.tar.gz
-WORKDIR .
 
-CMD ml_project_train configs/config_lr.yml train
-CMD ml_project_train configs/config_rf.yml train
+COPY /homework1/configs/ homework1/configs
+COPY /homework1/data homework1/data
+#COPY /homework1/models homework1/models
+COPY /online_inference /online_inference
+RUN mkdir /homework1/models
+
+
+RUN cd /homework1 && ml_project_train configs/config_lr.yml train
+RUN cd /homework1 && ml_project_train configs/config_rf.yml train
+
+WORKDIR /online_inference
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,6 +1,8 @@
 from fastapi.testclient import TestClient
-from online_inference.app import app
 import pytest
+import sys
+sys.path.insert(0, "..")
+from online_inference.app import app
 
 
 PREDICT_REQUEST_SAMPLE = [
