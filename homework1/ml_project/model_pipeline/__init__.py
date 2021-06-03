@@ -1,2 +1,2 @@
-from model_pipeline.prepare_data import DataProcessingPipeline, CustomMinMaxScaler
-from model_pipeline.classifier import Classifier, get_classification_report
+from .prepare_data import DataProcessingPipeline, CustomMinMaxScaler
+from .classifier import Classifier, get_classification_report

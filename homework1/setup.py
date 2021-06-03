@@ -9,5 +9,10 @@ setup(
     version="0.1.0",
     description="Heart Disease UCI",
     author="akoshel",
-    install_reqs=required
+    entry_points={
+        "console_scripts": [
+            "ml_project_train = ml_project.train_pipeline:train_pipeline_command"
+        ]
+    },
+    install_reqs=required,
 )

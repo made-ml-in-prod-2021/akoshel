@@ -4,9 +4,9 @@ import yaml
 import click
 import joblib
 from cloudpickle import load
-from model_pipeline import DataProcessingPipeline, Classifier, get_classification_report
-from data import read_csv, get_train_test_data
-from enities import read_training_pipeline_params
+from ml_project.model_pipeline import DataProcessingPipeline, Classifier, get_classification_report
+from ml_project.data import read_csv, get_train_test_data
+from ml_project.enities import read_training_pipeline_params
 
 
 APPLICATION_NAME = 'homework01'
@@ -48,6 +48,16 @@ def train_pipeline(params):
 def validate_pipeline(params):
     data = read_csv(params.input_data_for_validation)
     logger.info(f"Validation df loaded, shape:{data.shape}")
+    classifier, data_preprocessing_pipeline = get_model_and_dataprocessor(params)
+    transformed_data = data_preprocessing_pipeline.transform(data)
+    logger.info(f"data for validation preprocessed, shape: {transformed_data.shape}")
+    y_pred = classifier.predict(transformed_data)
+    logger.info(f"Predicts prepared")
+    pd.DataFrame(y_pred, columns=["target"]).to_csv(params.predicts_path)
+    logger.info(f"Predicts dumped to {params.predicts_path}")
+
+
+def get_model_and_dataprocessor(params):
     classifier = Classifier(params.classifier_params, params.model_type)
     classifier.model = joblib.load(params.output_model_path)
     logger.info(f"Model type {params.model_type} loaded from {params.output_model_path}")
@@ -56,12 +66,7 @@ def validate_pipeline(params):
     with open(params.output_data_preprocessor_path, 'rb') as f:
         data_preprocessing_pipeline.pipeline = load(f)
         logger.info(f"Data preprocessor loaded from {params.output_data_preprocessor_path}")
-    transformed_data = data_preprocessing_pipeline.transform(data)
-    logger.info(f"data for validation preprocessed, shape: {transformed_data.shape}")
-    y_pred = classifier.predict(transformed_data)
-    logger.info(f"Predicts prepared")
-    pd.DataFrame(y_pred, columns=["target"]).to_csv(params.predicts_path)
-    logger.info(f"Predicts dumped to {params.predicts_path}")
+    return classifier, data_preprocessing_pipeline
 
 
 
