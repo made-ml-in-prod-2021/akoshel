@@ -1,12 +1,7 @@
-import os
-import json
-
 import airflow.utils.dates
 from airflow import DAG
-from airflow.models import TaskInstance
-from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-from generate_data import generate_data
+from scripts import generate_data
 
 
 with DAG(
@@ -22,7 +17,7 @@ with DAG(
             "year": "{{ execution_date.year }}",
             "month": "{{ execution_date.month }}",
             "day": "{{ execution_date.day }}",
-            "hour": "{{ execution_date.hour }}",
-            "output_dir": "data/raw",
+            "raw_data_path": "data/raw",
+            "output_dir": "data/processed",
         }
     )

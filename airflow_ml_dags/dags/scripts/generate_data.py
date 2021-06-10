@@ -2,12 +2,12 @@ from hypothesis import strategies
 from hypothesis.extra.pandas import data_frames, column, range_indexes
 import os
 
+
 def generate_data(year: str,
-                       month: str,
-                       day: str,
-                       hour: str,
-                       output_dir: str,
-                       ) -> None:
+                  month: str,
+                  day: str,
+                  output_dir: str,
+                  ) -> None:
     df = data_frames(
         index=range_indexes(min_size=100),
         columns=[
@@ -27,10 +27,11 @@ def generate_data(year: str,
             column('target', dtype=int, elements=strategies.integers(min_value=0, max_value=1)),
         ]).example()
 
-    directory = f"{output_dir}/{year}/{month}/{day}/{hour}"
+    df['target'].iloc[20:30] = 1
+    directory = f"{output_dir}/{year}/{month}/{day}"
     if not os.path.exists(directory):
         os.makedirs(directory)
     with open(f"{directory}/data.csv", 'w') as f:
-        df.drop(columns=['target']).to_csv(f)
+        df.drop(columns=['target']).to_csv(f, index=False)
     with open(f"{directory}/target.csv", 'w') as f:
-        df[['target']].to_csv(f)
+        df[['target']].to_csv(f, index=False)
