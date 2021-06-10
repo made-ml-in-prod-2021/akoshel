@@ -8,7 +8,6 @@ from ml_project.model_pipeline import DataProcessingPipeline, Classifier, get_cl
 from ml_project.data import read_csv, get_train_test_data
 from ml_project.enities import read_training_pipeline_params
 
-
 APPLICATION_NAME = 'homework01'
 logger = logging.getLogger(APPLICATION_NAME)
 
@@ -45,6 +44,7 @@ def train_pipeline(params):
     data_preprocessing_pipeline.dump_preprocessor(params.output_data_preprocessor_path)
     logger.info(f"Data preprocessor dumped {params.output_data_preprocessor_path}")
 
+
 def validate_pipeline(params):
     data = read_csv(params.input_data_for_validation)
     logger.info(f"Validation df loaded, shape:{data.shape}")
@@ -67,7 +67,6 @@ def get_model_and_dataprocessor(params):
         data_preprocessing_pipeline.pipeline = load(f)
         logger.info(f"Data preprocessor loaded from {params.output_data_preprocessor_path}")
     return classifier, data_preprocessing_pipeline
-
 
 
 @click.command(name="train_pipeline")

@@ -1,5 +1,3 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
 import os
 from ml_project.train_pipeline import train_pipeline
 from ml_project.enities import read_training_pipeline_params

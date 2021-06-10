@@ -2,3 +2,6 @@
 /.hypothesis
 /.idea
 *.pytest_cache
+/airflow_ml_dags/data
+*.coverage
+*.gz
