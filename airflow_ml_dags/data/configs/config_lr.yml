@@ -2,7 +2,7 @@ input_data_path: "data/processed"
 input_data_for_validation: ""
 output_model_path: "data/models"
 output_data_preprocessor_path: "data/models"
-predicts_path: ""
+predicts_path: "data/metrics"
 logger_config: "data/configs/logger_config.yml"
 model_type: "Logistic Regression"
 split_params:

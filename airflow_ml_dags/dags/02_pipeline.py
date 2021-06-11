@@ -1,13 +1,7 @@
-import subprocess
-import sys
-
-
-
-
 import airflow.utils.dates
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from scripts import generate_data, process_data, train_model
+from scripts import generate_data, process_data, train_model, validate
 
 with DAG(
         dag_id="02_pipeline.py",
@@ -46,4 +40,15 @@ with DAG(
             "config_path": "data/configs/config_lr.yml",
         }
     )
-    gen_data >> proc_data >> train
+
+    validate = PythonOperator(
+        task_id="validate",
+        python_callable=validate,
+        op_kwargs={
+            "year": "{{ execution_date.year }}",
+            "month": "{{ execution_date.month }}",
+            "day": "{{ execution_date.day }}",
+            "config_path": "data/configs/config_lr.yml",
+        }
+    )
+    gen_data >> proc_data >> train >> validate

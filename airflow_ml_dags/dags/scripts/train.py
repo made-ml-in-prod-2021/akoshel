@@ -12,7 +12,7 @@ def train_model(year: str,
     directory = f"{params.output_model_path}/{year}/{month}/{day}"
     if not os.path.exists(directory):
         os.makedirs(directory)
-    params.input_data_path += f"/{year}/{month}/{day}/train.csv"
+    params.input_data_path += f"/{year}/{month}/{day}/val.csv"
     params.output_model_path += f"/{year}/{month}/{day}/logistic_regression.pkl"
     params.output_data_preprocessor_path += f"/{year}/{month}/{day}/data_preprocessor_lr.pkl"
     train_pipeline(params)

@@ -8,8 +8,8 @@ def generate_data(year: str,
                   day: str,
                   output_dir: str,
                   ) -> None:
-    df = data_frames(
-        index=range_indexes(min_size=200, max_size=201),
+    df_generator = data_frames(
+        index=range_indexes(min_size=10, max_size=15),
         columns=[
             column('chol', dtype=float, elements=strategies.floats(min_value=100, max_value=900)),
             column('thalach', dtype=int, elements=strategies.integers(min_value=30, max_value=250)),
@@ -25,9 +25,10 @@ def generate_data(year: str,
             column('ca', dtype=int, elements=strategies.integers(min_value=0, max_value=4)),
             column('thal', dtype=int, elements=strategies.integers(min_value=1, max_value=3)),
             column('target', dtype=int, elements=strategies.integers(min_value=0, max_value=1)),
-        ]).example()
-
-    df['target'].iloc[20:80] = 1
+        ])
+    df = df_generator.example()
+    for _ in range(10):
+        df = df.append(df_generator.example())
     directory = f"{output_dir}/{year}/{month}/{day}"
     if not os.path.exists(directory):
         os.makedirs(directory)
