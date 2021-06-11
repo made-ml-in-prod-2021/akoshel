@@ -6,7 +6,6 @@ import uvicorn
 from typing import List
 import os
 import sys
-
 sys.path.append("..")
 from ml_project.train_pipeline import get_model_and_dataprocessor
 from ml_project.enities import read_training_pipeline_params
@@ -19,7 +18,6 @@ DEFAULT_PATH_HW1 = '../homework1'
 class ModelResponse(BaseModel):
     id: int
     target: float
-
 
 class InputData(BaseModel):
     id: int
@@ -40,16 +38,14 @@ class InputData(BaseModel):
 
 app = FastAPI()
 
-
 @app.on_event("startup")
 def load_model():
     global classifier, data_processor
     print(os.path.join(DEFAULT_PATH_HW1, "configs/config_lr.yml"))
     params = read_training_pipeline_params(os.path.join(DEFAULT_PATH_HW1, "configs/config_lr.yml"))
     params.output_model_path = os.path.join(DEFAULT_PATH_HW1, params.output_model_path)
-    params.output_data_preprocessor_path = os.path.join(DEFAULT_PATH_HW1, params.output_data_preprocessor_path)
+    params.output_data_preprocessor_path  = os.path.join(DEFAULT_PATH_HW1, params.output_data_preprocessor_path)
     classifier, data_processor = get_model_and_dataprocessor(params)
-
 
 @app.get("/")
 def main():
@@ -59,7 +55,6 @@ def main():
 @app.get("/healz")
 def health() -> bool:
     return not (classifier is None and data_processor is None)
-
 
 @app.get("/predict/", response_model=List[ModelResponse])
 def predict(request: List[InputData]):
@@ -72,7 +67,6 @@ def prepare_predict_df(input_data: List[InputData]) -> pd.DataFrame:
     for row in input_data:
         df = df.append(row.__dict__, ignore_index=True)
     return df
-
 
 def make_predict(df: pd.DataFrame) -> List[ModelResponse]:
     transformed_data = data_processor.transform(df)
