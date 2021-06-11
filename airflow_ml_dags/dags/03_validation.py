@@ -4,6 +4,7 @@ from airflow.operators.python import PythonOperator
 from airflow.models import Variable
 from scripts import validate
 
+
 with DAG(
         dag_id="03_validation.py",
         start_date=airflow.utils.dates.days_ago(1),
