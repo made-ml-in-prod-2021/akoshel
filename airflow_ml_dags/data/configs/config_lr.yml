@@ -1,0 +1,19 @@
+input_data_path: "data/processed"
+input_data_for_validation: ""
+output_model_path: "data/models"
+output_data_preprocessor_path: "data/models"
+predicts_path: "data/metrics"
+logger_config: "data/configs/logger_config.yml"
+model_type: "Logistic Regression"
+split_params:
+  validation_size: 0.03
+  random_state: 23
+feature_params:
+  categorical_features: ['sex', 'cp', 'restecg', 'exang', 'slope', 'fbs', 'ca', 'thal']
+  numerical_features: ['chol', 'thalach', 'oldpeak', 'trestbps', 'age']
+  target: 'target'
+classifier_params:
+  C: 1.0
+  penalty: "l2"
+  fit_intercept: True
+  random_state: 23
