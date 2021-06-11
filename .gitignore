@@ -2,3 +2,6 @@
 /.hypothesis
 /.idea
 *.pytest_cache
+*data
+*.gz
+*.coverage
