@@ -6,7 +6,7 @@ from scripts import generate_data, process_data, train_model, validate
 with DAG(
         dag_id="02_pipeline.py",
         start_date=airflow.utils.dates.days_ago(1),
-        schedule_interval="@daily",
+        schedule_interval="@weekly",
         max_active_runs=1,
 ) as dag:
     gen_data = PythonOperator(
@@ -49,6 +49,7 @@ with DAG(
             "month": "{{ execution_date.month }}",
             "day": "{{ execution_date.day }}",
             "config_path": "data/configs/config_lr.yml",
+            "mode": "get_metrics",
         }
     )
     gen_data >> proc_data >> train >> validate
