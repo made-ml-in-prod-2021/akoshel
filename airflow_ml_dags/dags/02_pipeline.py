@@ -5,7 +5,7 @@ from scripts import generate_data, process_data, train_model, validate
 
 with DAG(
         dag_id="02_pipeline.py",
-        start_date=airflow.utils.dates.days_ago(1),
+        start_date=airflow.utils.dates.days_ago(14),
         schedule_interval="@weekly",
         max_active_runs=1,
 ) as dag:
