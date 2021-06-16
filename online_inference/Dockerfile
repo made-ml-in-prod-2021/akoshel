@@ -1,6 +1,6 @@
 FROM python:3.7
 
-COPY ../requirements.txt /requirements.txt
+COPY /requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
 COPY /homework1/dist/ml_project-0.1.0.tar.gz /ml_project-0.1.0.tar.gz
