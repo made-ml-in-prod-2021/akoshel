@@ -32,4 +32,4 @@ docker compose up --build
 key: amazing_model_path, 	value=data/models/amazing_model
 ```
 
-Должно работать :)
+Короч я не понял, что можно 

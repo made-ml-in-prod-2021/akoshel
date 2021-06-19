@@ -6,8 +6,8 @@ metadata:
     app: online-inference2
 spec:
   containers:
-    - image: akoshelev/online-inference:v2
-      name: online-inference
+    - image: akoshelev/online-inference:v6
+      name: online-inference2
       ports:
         - containerPort: 8000
       resources:
@@ -21,5 +21,12 @@ spec:
         httpGet:
           path: /healz
           port: 8000
-        initialDelaySeconds: 40
-        periodSeconds: 5
+        initialDelaySeconds: 15
+        periodSeconds: 3
+      livenessProbe:
+        httpGet:
+          path: /healz
+          port: 8000
+        initialDelaySeconds: 45
+        periodSeconds: 3
+
