@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: online-inference2
+  labels:
+    app: online-inference2
+spec:
+  replicas: 8
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0%
+      maxUnavailable: 100%
+  selector:
+    matchLabels:
+      app: online-inference2
+  template:
+    metadata:
+      name: online-inference2
+      labels:
+        app: online-inference2
+    spec:
+      containers:
+        - image: akoshelev/online-inference:v1
+          name: online-inference2
+          ports:
+            - containerPort: 8000
+
+
+
+
+          
